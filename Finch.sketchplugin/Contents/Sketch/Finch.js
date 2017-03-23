@@ -7,30 +7,38 @@ function btoa(input) {
         output += map.charAt(63 & block >> 8 - idx % 1 * 8)
     ) {
         charCode = str.charCodeAt(idx += 3 / 4);
-        if (charCode > 0xFF) {
-            //throw new InvalidCharacterError("'btoa' failed: The string to be encoded contains characters outside of the Latin1 range.");
-        }
         block = block << 8 | charCode;
     }
     return output;
 }
 
 function parseCSSAttributes(attributes) {
-    var result = attributes.map(function (prop) {
-        var parts = prop.split(': ')
-        if (parts.length === 2) {
-            var propname = parts[0]
-            var propvalue = parts[1].replace(';', '')
-        } else {
-            var propname = "undefined"
-            var propvalue = "undefined"
-        }
 
-        var propsObj = {}
-        propsObj[propname] = propvalue;
-        return propsObj
-    })
-    return result
+   var result = {}
+
+   attributes.forEach(function (property) {
+
+      var parts = property.split(': ')
+      if (parts.length !== 2) return
+
+      var propName = parts[0].replace(/-.*/, function(a) { return a.charAt(1).toUpperCase() + a.slice(2) })
+      var propValue = parts[1].replace(';', '')
+
+      switch (propName) {
+         case "background":
+            propName = "backgroundColor"
+         break
+      }
+
+      result[propName] = [{
+         value: propValue,
+         media: ""
+      }]
+
+   })
+
+   return result
+
 }
 
 function onRun(context) {
@@ -54,8 +62,8 @@ function onRun(context) {
         mockShape.setStyle(sharedStyle.style())
 
         data.styles.push({
-            id: String(sharedStyle.objectID()),
-            name: String(sharedStyle.name()),
+            sketchId: String(sharedStyle.objectID()),
+            title: String(sharedStyle.name()),
             type: 'box',
             properties: parseCSSAttributes(mockShape.CSSAttributes().slice(1))
         })
@@ -69,8 +77,8 @@ function onRun(context) {
         mockText.setStyle(sharedStyle.style())
 
         data.styles.push({
-            id: String(sharedStyle.objectID()),
-            name: String(sharedStyle.name()),
+            sketchId: String(sharedStyle.objectID()),
+            title: String(sharedStyle.name()),
             type: 'text',
             properties: parseCSSAttributes(mockText.CSSAttributes().slice(1))
         })
