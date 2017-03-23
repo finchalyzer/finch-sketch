@@ -76,11 +76,23 @@ function onRun(context) {
         var sharedStyle = textStyles[i]
         mockText.setStyle(sharedStyle.style())
 
+        var textAlignment = [
+            'left', 'right', 'center', 'justify'
+        ][mockText.textAlignment()]
+
+        var textDecoration = false
+        if(mockText.styleAttributes().NSStrikethrough) textDecoration = 'line-through'
+        if(mockText.styleAttributes().NSUnderline) textDecoration = 'underline'
+
+        var properties = parseCSSAttributes(mockText.CSSAttributes().slice(1))
+        properties.push({'textAlignment': textAlignment})
+        if(textDecoration) properties.push({'textDecoration': textDecoration})
+
         data.styles.push({
             sketchId: String(sharedStyle.objectID()),
             title: String(sharedStyle.name()),
             type: 'text',
-            properties: parseCSSAttributes(mockText.CSSAttributes().slice(1))
+            properties: properties
         })
     }
 
