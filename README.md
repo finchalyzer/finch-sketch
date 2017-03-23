@@ -1,0 +1,2 @@
+# finch-sketch
+Sketch plugin
