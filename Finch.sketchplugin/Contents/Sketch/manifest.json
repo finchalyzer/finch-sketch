@@ -1,0 +1,17 @@
+{
+    "name" : "Finch",
+    "identifier" : "com.sketchapp.finch-plugin",
+    "version" : "0.0.1",
+    "description" : "",
+    "authorEmail" : "arturs@finch.io",
+    "author" : "Finch.io",
+    "commands" : [
+    {
+      "script" : "Finch.js",
+      "handler" : "onRun",
+      "shortcut" : "",
+      "name" : "Finchalyze",
+      "identifier" : "finch"
+    }
+  ]
+}
