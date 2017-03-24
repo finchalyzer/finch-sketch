@@ -50,7 +50,8 @@ function onRun(context) {
 
     var data = {
         fileId: String(document.publisherFileName()),
-        styles: []
+        styles: [],
+        colors: []
     }
 
     var textStyles = document.documentData().layerTextStyles().objects()
@@ -84,9 +85,26 @@ function onRun(context) {
         if(mockText.styleAttributes().NSStrikethrough) textDecoration = 'line-through'
         if(mockText.styleAttributes().NSUnderline) textDecoration = 'underline'
 
+        var textTransform = false
+        if(mockText.styleAttributes().MSAttributedStringTextTransformAttribute == 1) textTransform = 'uppercase'
+        if(mockText.styleAttributes().MSAttributedStringTextTransformAttribute == 2) textTransform = 'lowercase'
+
         var properties = parseCSSAttributes(mockText.CSSAttributes().slice(1))
-        properties.push({'textAlignment': textAlignment})
-        if(textDecoration) properties.push({'textDecoration': textDecoration})
+        
+        properties.textAlignment = [{
+            value: textAlignment,
+            media: ""
+        }]
+
+        if(textDecoration) properties.textDecoration = [{
+            value: textDecoration,
+            media: ""
+        }]
+        if(textTransform) properties.textTransform = [{
+            value: textTransform,
+            media: ""
+        }]
+
 
         data.styles.push({
             sketchId: String(sharedStyle.objectID()),
@@ -94,6 +112,13 @@ function onRun(context) {
             type: 'text',
             properties: properties
         })
+    }
+
+    var documentColors = document.documentData().assets().colors()    
+    for (var i = 0; i < documentColors.length; i++) {
+        var colorObj = documentColors[i]
+        var rgba = 'rgba(' + colorObj.red() + ',' + colorObj.green() + ',' + colorObj.blue() + ',' + colorObj.alpha() + ')'
+        data.colors.push(rgba)
     }
 
     if (!data.styles.length) {
