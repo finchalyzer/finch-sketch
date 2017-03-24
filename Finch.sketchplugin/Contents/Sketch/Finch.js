@@ -41,7 +41,7 @@ function parseCSSAttributes(attributes) {
 
 }
 
-function onRun(context) {
+function exportStyles(context) {
     var app = NSApplication.sharedApplication()
     var sketch = context.api()
 
@@ -50,8 +50,7 @@ function onRun(context) {
 
     var data = {
         fileId: String(document.publisherFileName()),
-        styles: [],
-        colors: []
+        styles: []
     }
 
     var textStyles = document.documentData().layerTextStyles().objects()
@@ -114,13 +113,6 @@ function onRun(context) {
         })
     }
 
-    var documentColors = document.documentData().assets().colors()    
-    for (var i = 0; i < documentColors.length; i++) {
-        var colorObj = documentColors[i]
-        var rgba = 'rgba(' + colorObj.red() + ',' + colorObj.green() + ',' + colorObj.blue() + ',' + colorObj.alpha() + ')'
-        data.colors.push(rgba)
-    }
-
     if (!data.styles.length) {
         app.displayDialog_withTitle("It seems there are no shared styles defined yet.", "Whoops! Nothing to export!")
     } else {
@@ -137,4 +129,38 @@ function onRun(context) {
 
     }
 
+}
+
+function exportColors(context) {
+    var app = NSApplication.sharedApplication()
+    var document = context.document
+
+    var data = {
+        fileId: String(document.publisherFileName()),
+        colors: []
+    }
+
+
+    var documentColors = document.documentData().assets().colors()    
+    for (var i = 0; i < documentColors.length; i++) {
+        var colorObj = documentColors[i]
+        var rgba = 'rgba(' + colorObj.red() + ',' + colorObj.green() + ',' + colorObj.blue() + ',' + colorObj.alpha() + ')'
+        data.colors.push(rgba)
+    }
+
+    if (!data.colors.length) {
+        app.displayDialog_withTitle("It seems there are no document colors defined yet.", "Whoops! Nothing to export!")
+    } else {
+
+        var str = JSON.stringify(data)
+        var updateUrl = NSURL.URLWithString(@"finch://sketch?data=" + btoa(str))
+
+        var workspace = NSWorkspace.sharedWorkspace()
+        if (String(workspace.URLForApplicationToOpenURL(updateUrl)).indexOf('Finch') !== -1) {
+            workspace.openURL(updateUrl)
+        } else {
+            app.displayDialog_withTitle("It seems that Finch app is not installed yet.", "Can't find Finch!")
+        }
+
+    }
 }

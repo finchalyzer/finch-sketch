@@ -8,10 +8,23 @@
     "commands" : [
     {
       "script" : "Finch.js",
-      "handler" : "onRun",
+      "handler" : "exportStyles",
       "shortcut" : "",
-      "name" : "Finchalyze",
-      "identifier" : "finch"
+      "name" : "Export Styles",
+      "identifier" : "finch-styles"
+    },
+    {
+      "script" : "Finch.js",
+      "handler" : "exportColors",
+      "shortcut" : "",
+      "name" : "Export Document Colors",
+      "identifier" : "finch-colors"
     }
-  ]
+  ],
+  "menu": {
+    "items": [
+      "finch-styles",
+      "finch-colors"
+    ]
+  }
 }
