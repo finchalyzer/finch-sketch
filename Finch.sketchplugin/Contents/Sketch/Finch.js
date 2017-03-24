@@ -144,7 +144,7 @@ function exportColors(context) {
     var documentColors = document.documentData().assets().colors()    
     for (var i = 0; i < documentColors.length; i++) {
         var colorObj = documentColors[i]
-        var rgba = 'rgba(' + colorObj.red() + ',' + colorObj.green() + ',' + colorObj.blue() + ',' + colorObj.alpha() + ')'
+        var rgba = 'rgba(' + (Math.floor(colorObj.red() * 255)) + ',' + (Math.floor(colorObj.green() * 255)) + ',' + (Math.floor(colorObj.blue() * 255)) + ',' + colorObj.alpha() + ')'
         data.colors.push(rgba)
     }
 
