@@ -1,4 +1,4 @@
-# Finch Exporter
+# Finch
 
 A Sketch plugin that lets you export your global styles and document colors directly to Finch app.
 
