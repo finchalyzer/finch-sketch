@@ -2,6 +2,8 @@
 
 A [Sketch](https://www.sketchapp.com) plugin that lets you export your global styles and document colors directly to [Finch](https://finch.io).
 
+![](http://cdn.finch.io/public/sketch-to-the-finch.gif)
+
 * * * * *
 
 ## Installation
