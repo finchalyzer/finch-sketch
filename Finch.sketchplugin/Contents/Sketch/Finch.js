@@ -49,7 +49,7 @@ function exportStyles(context) {
     var pages = document.pages()
 
     var data = {
-        fileId: String(document.publisherFileName()),
+        fileId: String(document.displayName()),
         styles: []
     }
 
@@ -136,7 +136,7 @@ function exportColors(context) {
     var document = context.document
 
     var data = {
-        fileId: String(document.publisherFileName()),
+        fileId: String(document.displayName()),
         colors: []
     }
 
